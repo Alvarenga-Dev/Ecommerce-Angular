@@ -1,17 +1,23 @@
 import { Component } from '@angular/core';
 import { ProductsService } from '../services/products.service';
-import { Products } from '../../types';
+import { Product, Products } from '../../types';
+import { ProductComponent } from '../components/product/product.component';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [ProductComponent, CommonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-  constructor(private producsService: ProductsService) {
+  constructor(private producsService: ProductsService) {}
+
+  products: Product[] = [];
+
+  onProductOutput(product: Product) {
+    console.log(product.name)
   }
 
   ngOnInit() {
@@ -20,8 +26,8 @@ export class HomeComponent {
         page: 0,
         perPage: 5,
       })
-      .subscribe((products: Products) => {
-        console.log(products.items);
+      .subscribe((data: Products) => {
+        this.products = data.items;
       });
   }
 }
